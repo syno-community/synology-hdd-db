@@ -1,0 +1,242 @@
+v3.2.68
+- Updated so E10M20-T1, M2D20, M2D18 and M2D17 now work in models that use device tree and are using:
+    - DSM 7.2 Update 2 and 3, 7.2.1, 7.2.1 Update 1, 2 and 3. Issue #132, #148
+- Now edits model.dtb instead of downloading a pre-edited version.
+- Improvements to --restore option.
+- Fix for Unknown vendor causing "Unsupported firmware version" warning. Issue #161
+- Now supports NVMe drives that show as Unknown brand in storage manager: Issue #161
+    - ADATA, Corsair, Gigabyte, HS/MAXIO, MSI, Netac, Phison, PNY
+    - SK Hynix, Solidigm, SPCC/Lexar, TEAMGROUP, UMIS, ZHITAI
+- Fixed bug where memory was shown in MB but with GB unit.
+- Removed -i, --immutable option.
+- Minor bug fixes.
+
+v3.1.65
+- Bug fix for NVMe drives with / in the model name for non-device tree Synology models. Issue #154
+
+v3.1.64
+- Added -e --email option to disable coloured output to make task scheduler emails easier to read.
+- Bug fix for script not updating itself if .sh file had been renamed.
+- Bug fix for missing executable permissions if .sh file had been renamed.
+- Bug fix to prevent update loop if script's .tar.gz file already exists in /tmp.
+- Bug fix to prevent update failing if script's temp folder already exists in /tmp.
+- Now only copies CHANGES.txt to script location if script is located on a volume, to prevent putting CHANGES.txt on system partition (/usr/bin, /usr/sbin, /root etc.)
+
+v3.1.63
+- Added support to disable unsupported memory warnings on DVA models. #136
+
+v3.1.62
+- Fixed bug where newly connected expansion units weren't found until up to 24 hours later. Issue #124
+
+v3.1.61
+- Added enabling E10M20-T1, M2D20 and M2D18 for DS1821+, DS1621+ and DS1520+.
+- Added enabling M2D18 for RS822RP+, RS822+, RS1221RP+ and RS1221+ for older DSM versions.
+- Fixed enabling E10M20-T1, M2D20 and M2D18 cards in models that don't officially support them.
+- Fixed bugs where the calculated amount of installed memory could be incorrect:
+    - If last memory socket was empty an invalid unit of bytes could be used. Issue #106
+    - When dmidecode returned MB for one ram module and GB for another ram module. Issue #107
+- Fixed bug displaying the max memory setting if total installed memory was less than the max memory. Issue #107
+- Fixed bug where sata1 drive firmware version was wrong if there was a sata10 drive.
+
+v3.0.56
+- Minor bug fix for checking amount of installed memory.
+
+v3.0.55
+- Now enables any installed Synology M.2 PCIe cards for models that don't officially support them.
+   - You can use a M2D20, M2D18, M2D17 or E10M20-T1 on any model with a PCIe slot (not Mini PCIe).
+- Now the script reloads itself after updating.
+- Added -i, --immutable option to enable immutable snapshots on models older than '20 series running DSM 7.2.
+- Added -w, --wdda option to disable WDDA (to prevent warnings when WD drives have been running more than 3 years).
+- Added "You may need to reboot" message when NVMe drives were detected.
+- Added --autoupdate=[age] option to auto update synology_hdd_db x days after new version released.
+    - Autoupdate logs update success or errors to DSM system log.
+- Changed help to show -r, --ram also sets max memory to the amount of installed memory.
+- Changed the "No M.2 cards found" to "No M.2 PCIe cards found" to make it clearer.
+- Changed to skip checking the amount of installed memory in DSM 6 (because it was never working in DSM 6).
+- Fixed HDD/SSD firmware versions always being 4 characters long (for DSM 7.2 and 6.2.4 Update 7).
+- Fixed detecting amount of installed memory (for DSM 7.2 which now reports GB instead of MB).
+- Fixed USB drives sometimes being detected as internal drives (for DSM 7.2).
+- Fixed error if /run/synostorage/disks/nvme0n1/m2_pool_support doesn't exist yet (for DSM 7.2).
+- Fixed drive db update still being disabled in /etc/synoinfo.conf after script run without -n or --noupdate option.
+- Fixed drive db update still being disabled in /etc/synoinfo.conf after script run with --restore option.
+- Fixed permissions on restored files being incorrect after script run with --restore option.
+- Fixed permissions on backup files.
+
+v2.2.47
+- Updated reboot info in readme.
+- Added reboot message for DSM 7.
+- Bug fix for issue #77 (escape slashes in drive model name).
+- Added error sound.
+
+v2.2.45
+- Minor bug fix.
+
+v2.2.44
+- Added --restore info to --help
+- Updated restore option to download the latest db files from Synology.
+- Now warns you if you try to run it in sh with "sh scriptname.sh"
+
+v2.2.43
+- Fixed DSM 6 bug where the drives were being duplicated in the .db files each time the script was run.
+- Fixed DSM 6 bug where the .db files were being duplicated as .dbr each time the db files were edited.
+
+v2.2.42
+- Fixed bug where expansion units ending in RP or II were not detected.
+- Added a --restore option to undo all changes made by the script.
+- Now looks for and edits both v7 and non-v7 db files to solve issue #11 for RS '21 models running DSM 6.2.4. This will also ensure the script still works if:
+    - Synology append different numbers to the db file names in DSM 8 etc.
+    - The detected NAS model name does not match the .db files' model name.
+- Now backs up the .db.new files (as well as the .db files).
+- Now shows max memory in GB instead of MB.
+- Now shows status of "Support disk compatibility" setting even if it wasn't changed.
+- Now shows status of "Support memory compatibility" setting even if it wasn't changed.
+
+v2.1.38
+- Improved shell output when editing max memory setting.
+- Changed method of checking if drive is a USB drive to prevent ignoring internal drives on RS models.
+- Changed to not run "synostgdisk --check-all-disks-compatibility" in DSM 6.2.3 (which has no synostgdisk).
+
+v2.1.37
+- Now edits max supported memory to match the amount of memory installed, if installed memory is greater than the current max memory setting.
+- Minor improvements.
+
+v2.0.36
+- Show the options used.
+- Thank you to Gummibando on reddit for their donation.
+
+v2.0.35
+- Now allows creating M.2 storage pool and volume all from Storage Manager.
+
+v1.3.34
+- Now always shows your drive entries in the host db file if -s or --showedits used instead of only if db file was edited during that run.
+- Changed to show usage if invalid long option used instead of continuing.
+
+v1.3.33
+-  Fixed bug inserting firmware version for already existing model.
+
+v1.3.32
+- Changed to add drives' firmware version to the db files (to support data deduplication).
+    - See https://github.com/007revad/Synology_enable_Deduplication
+- Changed to be able to edit existing drive entries in the db files to add the firmware version.
+- Now supports editing db files that don't currently have any drives listed.
+
+v1.2.31
+- Bug fix. The --noupdate option was coded as --nodbupdate. Now either will work.
+- Bug fix. Re-enable drive db updates wasn't working in some instances.
+
+v1.2.30
+- Fixed "download new version" failing if script was run via symlink or ./<scriptname>
+
+v1.2.29
+- Bug fix. v1.2.28 had v1.2.27 in the sh file so it always wanted to update!
+
+v1.2.28
+- Fixed bug in getting the M.2 card model.
+
+v1.2.27
+- Changed 'latest version check' to download and extract to /tmp then copy only the syno_hdd_db.sh and readme.txt files to the currrently running script's location.
+- Minor tweaks to the shell output.
+
+v1.2.25
+- Minor bug fix.
+
+v1.2.24
+- Bug fix. Ignoring removable drives was ignoring all drives in DSM 7 on a RS2421rp+. Fix issue #23.
+
+v1.2.23
+- Changed to show if no M.2 cards were found, if M.2 drives were found.
+
+v1.2.22
+- Changed 'latest version check' to download to /tmp and extract files to the script's location to fix issue #27.
+
+v1.2.21
+- Reinstated removing brand from start of drive model to fix issue #24.
+
+v1.2.20
+- Added a timeouts when checking for newer script version in case github is down or slow to fix issue #25.
+- Fixed change log (v1.2.19 and v1.2.18 were listed as v2.2.19 and v2.2.19).
+
+v1.2.19
+- Minor change to check new version code.
+
+v1.2.18
+- Minor shell output formatting fix.
+
+v1.2.17
+- Added disable support memory compatibility option --ram or -r
+
+v1.2.16
+- Changed to show the script version, Synology model and DSM version on each run to make it easier to debug any user's issues.
+
+v1.2.15
+- Now finds your expansion units' model numbers and adds your drives to their db files.
+- Now adds your M.2 drives to your M.2 PCI card's db files (supports M2Dxx and E10M20-T1 and future models with similar model names).
+- Improved flags/options checking and added usage help (-h or --help) and version info (-v or --version).
+- Can now download the latest script version for you (if you have 'user home service' enabled in DSM).
+- Now adds 'support_m2_pool="yes"' line for models that don't have support_m2_pool in synoinfo.conf
+  - To (hopefully) prevent losing your SSH created M2 volume when running this script on models that DSM 7.2 Beta does not list as supported for creating M2 volumes.
+- Added removal of " 00Y" from end of Samsung/Lenovo SSDs to fix issue #13.
+- Changed Synology NAS model detection to be more reliable (for models that came in different variations and report extra text after model). issue #2 and issue #10
+- Changed checking drive_db_test_url setting to be more durable.
+- Fixed bug where removable drives were being added to the drive database.
+- Fixed bug where "M.2 volume support already enabled" message appeared when NAS had no M.2 drives.
+
+v1.1.14
+- Minor bug fix.
+
+v1.1.13
+- Fixed bug in v1.1.12 "check that M.2 volume support is enabled"
+
+v1.1.12
+- Added check that M.2 volume support is enabled.
+
+v1.1.11
+- Added support for M.2 SATA drives.
+- Can now skip processing M.2 drives by running script with the -m2 flag.
+- Changed method of getting drive and firmware version so script is faster and easier to maintain. No longer using smartctl or hdparm.
+- Changed SAS drive firmware version detection to support SAS drives that hdparm doesn't work with.
+- Removed error message and aborting if *.db.new not found (clean DSM installs don't have a *.db.new).
+- Fixed script version check introduced in 1.0.7.
+
+v1.1.10
+- Now makes DSM recheck disk compatibility so reboot not needed (DSM 7 only).
+- Fixed DSM 6 bug when DSM 6 used the old db file format.
+
+v1.1.9
+- Added support for SAS drives.
+- Now gets HDD/SSD/SAS drive model number with smartctl instead of hdparm.
+
+v1.1.8
+- Now prevents DSM auto updating the drive database.
+- Disable "support_disk_compatibility" (that was added in v1.0.6) is now optional.
+  - Run script with -f or -force to disable "support_disk_compatibility".
+  - If run without -f or -force "support_disk_compatibility" is re-enabled.
+
+v1.0.7
+- Added message if newer script version is available.
+
+v1.0.6
+- Added 2nd method of disabling disk compatibility to solve issue #1 and #4 for the few people where the original method didn't work.
+
+v1.0.5
+- Changed to avoid issue #2
+
+v1.0.4
+- Now backs up the database file if there is no backup already.
+
+v1.0.3
+Changed to avoid avoid error messages from previous change to search for sda and sata# drives in DSM 6 and DSM 7.
+- /dev/sata*: No such file or directory
+- /dev/sd*: No such file or directory
+
+v1.0.2
+- Improved formatting when listing found drives.
+
+v1.0.1
+- Fixed issue where drives weren't detected if:
+  - NAS had been updated from DSM 6 to DSM 7 and still used sda, sdb etc.
+  - Models like the DVA3219 that use sata# even in DSM 6.
+
+v1.0.0
+- Initial release.
+
